@@ -25,6 +25,7 @@ export default function Home() {
       const data = await response.json();
       setJokes(data.jokes); // Assumendo che `data.jokes` sia una lista di battute
     } catch (err) {
+      console.error(err);
       setError("C'è stato un errore nel caricamento delle battute.");
     }
     setLoading(false);
