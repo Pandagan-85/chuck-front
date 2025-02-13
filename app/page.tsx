@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import AboutMe from "./components/aboutme";
+import AppDescription from "./components/AppDescription";
+import Image from "next/image";
 
 type Joke = {
   text: string;
@@ -36,16 +39,24 @@ export default function Home() {
       <h1 className="text-3xl font-bold mb-4">
         😂 Analisi NLP delle battute di Chuck Norris
       </h1>
+      <Image
+        src="/Chuck_norris_mia_illustrazione.png"
+        alt="Chuck Norris"
+        width={200}
+        height={600}
+        className=" border-gray-300"
+        unoptimized
+      />
       <button
         onClick={fetchJokes}
-        className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+        className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition"
       >
         {loading ? "Caricamento..." : "Genera 10 Battute"}
       </button>
 
       {error && <p className="mt-4 text-red-500">{error}</p>}
 
-      <div className="mt-6 space-y-4">
+      <div className="mt-6 space-y-4 max-w-lg w-full mx-auto">
         {jokes.map((joke, index) => (
           <div
             key={index}
@@ -63,6 +74,17 @@ export default function Home() {
             </p>
           </div>
         ))}
+      </div>
+      <div className="flex flex-col md:flex-row justify-center items-start gap-8 p-6 min-h-screen bg-cyan-900">
+        {/* Colonna 1 - Descrizione dell'App */}
+        <div className="flex-1 max-w-lg">
+          <AppDescription />
+        </div>
+
+        {/* Colonna 2 - About Me */}
+        <div className="flex-1 max-w-lg">
+          <AboutMe />
+        </div>
       </div>
     </div>
   );
