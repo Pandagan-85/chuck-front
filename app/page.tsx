@@ -23,15 +23,25 @@ export default function Home() {
         "https://chucknorris-jokes-w5df.onrender.com/jokes"
       ); // Usa l'URL del backend
       if (!response.ok) {
-        throw new Error("Errore nel recupero delle battute");
+        const errorData = await response.json();
+        throw new Error(
+          `Errore nel recupero delle battute: ${errorData.message}`
+        );
       }
       const data = await response.json();
       setJokes(data.jokes); // Assumendo che `data.jokes` sia una lista di battute
-    } catch (err) {
+    } catch (err: unknown) {
       console.error(err);
-      setError("C'è stato un errore nel caricamento delle battute.");
+      if (err instanceof Error) {
+        setError(
+          err.message || "C'è stato un errore nel caricamento delle battute."
+        );
+      } else {
+        setError("C'è stato un errore sconosciuto.");
+      }
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -56,6 +66,10 @@ export default function Home() {
 
       {error && <p className="mt-4 text-red-500">{error}</p>}
 
+      {loading && (
+        <p className="mt-4 text-blue-500">Caricamento delle battute...</p>
+      )}
+
       <div className="mt-6 space-y-4 max-w-lg w-full mx-auto">
         {jokes.map((joke, index) => (
           <div
@@ -75,6 +89,7 @@ export default function Home() {
           </div>
         ))}
       </div>
+
       <div className="flex flex-col md:flex-row justify-center items-start gap-8 p-6 min-h-screen bg-cyan-900">
         {/* Colonna 1 - Descrizione dell'App */}
         <div className="flex-1 max-w-lg">
